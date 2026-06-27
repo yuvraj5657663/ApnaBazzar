@@ -8,7 +8,7 @@ function HistoryTable({ transactions, userRole, loading, onRefresh }) {
   const handleExport = async (type) => {
     try {
       const token = getToken();
-      const url = `http://127.0.0.1:5000/api/exports/${type}`;
+      const url = `${BASE_URL}/exports/${type}`;
       const res = await fetch(url, {
         headers: { Authorization: `Bearer ${token}` }
       });

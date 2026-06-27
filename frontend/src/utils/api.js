@@ -1,4 +1,4 @@
-const BASE_URL = 'http://127.0.0.1:5000/api';
+const BASE_URL = 'https://vercel.app';
 
 // Get stored JWT token
 export const getToken = () => localStorage.getItem('jivika_token');
