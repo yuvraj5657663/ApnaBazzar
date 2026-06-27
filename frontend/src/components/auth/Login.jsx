@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { apiLogin, setAuth } from '../../utils/api';
+import jeevikaLogo from '../../assets/jeevika-logo.png';
 
 function Login({ onLoginSuccess, onSwitchToSignup }) {
   const [email, setEmail] = useState('');
@@ -42,6 +43,9 @@ function Login({ onLoginSuccess, onSwitchToSignup }) {
     return (
       <div style={styles.page}>
         <div style={styles.card}>
+          <div style={{ textAlign: 'center', marginBottom: '20px' }}>
+            <img src={jeevikaLogo} alt="Jeevika" style={{ width: '64px', height: '64px', objectFit: 'contain' }} />
+          </div>
           <h2 style={styles.title}>Reset Password</h2>
           <p style={styles.subtitle}>Enter your registered email and we will send a recovery link.</p>
 
@@ -73,7 +77,7 @@ function Login({ onLoginSuccess, onSwitchToSignup }) {
     <div style={styles.page}>
       <div style={styles.card}>
         <div style={styles.logoArea}>
-          <div style={styles.logoIcon}>🔲</div>
+          <img src={jeevikaLogo} alt="Jeevika" style={styles.logoImg} />
           <div>
             <h1 style={styles.brandName}>JIVIKA SUITE</h1>
             <p style={styles.brandTag}>Village Financial Management Platform</p>
@@ -135,10 +139,9 @@ const styles = {
     display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px',
     paddingBottom: '20px', borderBottom: '1px solid #f1f5f9'
   },
-  logoIcon: {
-    backgroundColor: '#0ea5e9', color: 'white', width: '40px', height: '40px',
-    borderRadius: '10px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontSize: '18px', fontWeight: 'bold'
+  logoImg: {
+    width: '52px', height: '52px', objectFit: 'contain',
+    borderRadius: '10px', backgroundColor: '#f8fafc', padding: '4px'
   },
   brandName: { margin: 0, fontSize: '16px', fontWeight: '700', color: '#0f172a', letterSpacing: '1px' },
   brandTag: { margin: 0, fontSize: '11px', color: '#94a3b8' },

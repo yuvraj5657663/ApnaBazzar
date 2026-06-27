@@ -4,6 +4,7 @@ import VoExpenseTracker from './components/VoExpenseTracker/index';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
 import { getStoredUser, clearAuth } from './utils/api';
+import jeevikaLogo from './assets/jeevika-logo.png';
 
 function App() {
   // Restore user from localStorage on page load (JWT persistence)
@@ -42,7 +43,11 @@ function App() {
       {/* Navbar */}
       <nav style={styles.nav}>
         <div style={styles.navBrand}>
-          <div style={styles.navLogo}>🔲</div>
+          <img
+            src={jeevikaLogo}
+            alt="Jeevika Logo"
+            style={{ width: '42px', height: '42px', borderRadius: '8px', objectFit: 'contain', backgroundColor: 'white', padding: '2px' }}
+          />
           <div>
             <span style={styles.navTitle}>JIVIKA</span>
             <span style={styles.navSubtitle}> SUITE</span>
@@ -117,11 +122,6 @@ const styles = {
     boxShadow: '0 2px 12px rgba(0,0,0,0.2)', position: 'sticky', top: 0, zIndex: 1000
   },
   navBrand: { display: 'flex', alignItems: 'center', gap: '10px' },
-  navLogo: {
-    backgroundColor: '#0ea5e9', color: 'white', width: '34px', height: '34px',
-    borderRadius: '8px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-    fontWeight: 'bold', fontSize: '16px'
-  },
   navTitle: { color: 'white', fontWeight: '800', fontSize: '17px', letterSpacing: '1.5px' },
   navSubtitle: { color: '#38bdf8', fontWeight: '500', fontSize: '13px' },
   navTabs: { display: 'flex', gap: '10px' },
