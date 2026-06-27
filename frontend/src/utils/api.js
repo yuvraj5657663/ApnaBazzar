@@ -1,8 +1,9 @@
-// Production mein VITE_API_URL env variable use hoga
-// Local mein proxy (vite.config.js) /api ko 5000 par forward karta hai
+// Production backend URL
 const BASE_URL = import.meta.env.VITE_API_URL
   ? `${import.meta.env.VITE_API_URL}/api`
-  : '/api';
+  : import.meta.env.PROD
+    ? 'https://apna-bazzar-eight.vercel.app/api'
+    : '/api';
 
 // Get stored JWT token
 export const getToken = () => localStorage.getItem('jivika_token');
