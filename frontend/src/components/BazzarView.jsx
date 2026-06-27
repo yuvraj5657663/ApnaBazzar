@@ -1,16 +1,19 @@
 import { useEffect, useState } from 'react';
 
+// ⚠️ APNA ASLI VERCEL BACKEND URL YAHAN PASTE KAREIN (Aakhiri me /api zaroor lagayein)
+const BACKEND_API_URL = 'https://vercel.app'; 
+
 function BazaarView() {
   const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Backend se ApnaBazaar ke products fetch kar rahe hain
-    fetch('http://127.0.0.1:5000/api/products')
+    // Live Vercel Backend se ApnaBazaar ke products fetch kar rahe hain
+    fetch(`${BACKEND_API_URL}/products`)
       .then(res => res.json())
       .then(data => {
         setProducts(data);
-        loading && setLoading(false);
+        if (loading) setLoading(false);
       })
       .catch(err => {
         console.error("Products fetch karne mein error aaya:", err);
