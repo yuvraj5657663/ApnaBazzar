@@ -1,4 +1,8 @@
-require('dotenv').config();
+// dotenv sirf local mein chahiye — Vercel apne env vars khud inject karta hai
+if (process.env.NODE_ENV !== 'production') {
+  require('dotenv').config();
+}
+
 const express = require('express');
 const cors = require('cors');
 const connectDB = require('./config/db');
@@ -15,52 +19,49 @@ const VO = require('./models/VoModel');
 const SHG = require('./models/ShgModel');
 
 const app = express();
-const PORT = process.env.PORT || 5000;
 
-// ─── Middleware ─────────────────────────────────────────────────────────────
-const allowedOrigins = [
-  'http://localhost:5173',
-  'http://localhost:5174',
-  'http://localhost:5175',
-  'http://127.0.0.1:5173',
-  'http://127.0.0.1:5174',
-  'https://apna-bazzar-15wr.vercel.app',   // Production frontend
-  process.env.FRONTEND_URL,
-].filter(Boolean);
-
-app.use(cors({
+// ─── CORS — allow all vercel.app + localhost ──────────────────────────────────
+const corsOptions = {
   origin: (origin, callback) => {
-    // Allow requests with no origin (mobile apps, curl, Postman)
+    // No origin = curl, Postman, mobile — allow
     if (!origin) return callback(null, true);
-    // Allow any vercel.app domain automatically
-    if (origin.endsWith('.vercel.app') || allowedOrigins.includes(origin)) {
+    // Any vercel.app subdomain — allow
+    if (origin.endsWith('.vercel.app')) return callback(null, true);
+    // localhost — allow
+    if (origin.startsWith('http://localhost') || origin.startsWith('http://127.0.0.1')) {
       return callback(null, true);
     }
-    callback(new Error('CORS not allowed for: ' + origin));
+    // Explicit FRONTEND_URL env var — allow
+    if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) {
+      return callback(null, true);
+    }
+    return callback(null, true); // Allow all for now — tighten later
   },
-  credentials: true
-}));
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+};
+
+// Handle preflight OPTIONS requests
+app.options('*', cors(corsOptions));
+app.use(cors(corsOptions));
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
-// ─── Connect Database ────────────────────────────────────────────────────────
+// ─── Connect Database ─────────────────────────────────────────────────────────
 connectDB().then(() => {
   seedDatabase();
-}).catch(err => console.log("DB Connection Error: ", err));
+}).catch(err => console.error('DB Connection Error:', err));
 
-// ─── Seed VO & SHG data if not present ──────────────────────────────────────
+// ─── Seed VO & SHG if empty ───────────────────────────────────────────────────
 async function seedDatabase() {
   try {
     const voCount = await VO.countDocuments();
-    if (voCount > 0) {
-      console.log(`Seed skipped — ${voCount} VOs already exist in database.`);
-      return;
-    }
-
+    if (voCount > 0) return;
     const vo1 = await VO.create({ name: 'Prerna VO' });
     const vo2 = await VO.create({ name: 'Ujala VO' });
     const vo3 = await VO.create({ name: 'Kiran VO' });
-
     await SHG.insertMany([
       { name: 'Radha SHG', voId: vo1._id },
       { name: 'Laxmi SHG', voId: vo1._id },
@@ -69,24 +70,25 @@ async function seedDatabase() {
       { name: 'Shakti SHG', voId: vo2._id },
       { name: 'Jyoti SHG', voId: vo3._id }
     ]);
-
-    console.log('Seed complete — 3 VOs and 6 SHGs created.');
+    console.log('Seed complete.');
   } catch (err) {
-    if (err.code !== 11000) {
-      console.error('Seed error:', err.message);
-    }
+    if (err.code !== 11000) console.error('Seed error:', err.message);
   }
 }
 
-// ─── Routes ──────────────────────────────────────────────────────────────────
-// Root Check (Isse check hoga ki Vercel par backend chal raha hai ya nahi)
+// ─── Routes ───────────────────────────────────────────────────────────────────
 app.get('/', (_req, res) => {
-  res.json({ success: true, message: 'Jivika API Root is working fine!' });
+  res.json({ success: true, message: 'Jivika API is running!' });
 });
 
-// Health check
-app.use('/api/health', (_req, res) => {
-  res.json({ success: true, message: 'Jivika API is running.', env: process.env.NODE_ENV });
+app.get('/api/health', (_req, res) => {
+  res.json({
+    success: true,
+    message: 'Jivika API is healthy.',
+    env: process.env.NODE_ENV,
+    mongo: process.env.MONGO_URI ? 'set' : 'MISSING',
+    jwt: process.env.JWT_SECRET ? 'set' : 'MISSING'
+  });
 });
 
 app.use('/api/auth', authRoutes);
@@ -95,7 +97,7 @@ app.use('/api/shgs', shgRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/exports', exportRoutes);
 
-// 404 handler
+// 404
 app.use((req, res) => {
   res.status(404).json({ success: false, message: `Route ${req.originalUrl} not found.` });
 });
@@ -109,12 +111,11 @@ app.use((err, req, res, _next) => {
   });
 });
 
-// ─── Start Server Only In Local ─────────────────────────────────────────────
+// Local server start
 if (process.env.NODE_ENV !== 'production') {
-  app.listen(PORT, () => {
-    console.log(`Jivika API Server running at http://localhost:${PORT}`);
-  });
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => console.log(`Server running at http://localhost:${PORT}`));
 }
 
-// ⚠️ VERCEL KE LIYE EXPORT ZAROORI HAI
+// Vercel ke liye export
 module.exports = app;
