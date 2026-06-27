@@ -26,7 +26,7 @@ app.use(cors({
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5174',
     'http://127.0.0.1:5175',
-    'https://vercel.app' // ⚠️ APNA VERCEL FRONTEND LINK YAHAN BADLEIN
+    'https://vercel.app', 
   ],
   credentials: true
 }));
