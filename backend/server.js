@@ -25,7 +25,8 @@ app.use(cors({
     'http://localhost:5175',
     'http://127.0.0.1:5173',
     'http://127.0.0.1:5174',
-    'http://127.0.0.1:5175'
+    'http://127.0.0.1:5175',
+    'https://vercel.app' // ⚠️ APNA VERCEL FRONTEND LINK YAHAN BADLEIN
   ],
   credentials: true
 }));
@@ -35,7 +36,7 @@ app.use(express.urlencoded({ extended: true }));
 // ─── Connect Database ────────────────────────────────────────────────────────
 connectDB().then(() => {
   seedDatabase();
-});
+}).catch(err => console.log("DB Connection Error: ", err));
 
 // ─── Seed VO & SHG data if not present ──────────────────────────────────────
 async function seedDatabase() {
@@ -61,7 +62,6 @@ async function seedDatabase() {
 
     console.log('Seed complete — 3 VOs and 6 SHGs created.');
   } catch (err) {
-    // Unique constraint hit means data already exists — safe to ignore
     if (err.code !== 11000) {
       console.error('Seed error:', err.message);
     }
@@ -69,6 +69,11 @@ async function seedDatabase() {
 }
 
 // ─── Routes ──────────────────────────────────────────────────────────────────
+// Root Check (Isse check hoga ki Vercel par backend chal raha hai ya nahi)
+app.get('/', (_req, res) => {
+  res.json({ success: true, message: 'Jivika API Root is working fine!' });
+});
+
 // Health check
 app.use('/api/health', (_req, res) => {
   res.json({ success: true, message: 'Jivika API is running.', env: process.env.NODE_ENV });
@@ -94,8 +99,12 @@ app.use((err, req, res, _next) => {
   });
 });
 
-// ─── Start Server ─────────────────────────────────────────────────────────────
-app.listen(PORT, '127.0.0.1', () => {
-  console.log(`Jivika API Server running at http://127.0.0.1:${PORT}`);
-});
+// ─── Start Server Only In Local ─────────────────────────────────────────────
+if (process.env.NODE_ENV !== 'production') {
+  app.listen(PORT, () => {
+    console.log(`Jivika API Server running at http://localhost:${PORT}`);
+  });
+}
 
+// ⚠️ VERCEL KE LIYE EXPORT ZAROORI HAI
+module.exports = app;
