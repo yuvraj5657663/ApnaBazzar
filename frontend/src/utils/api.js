@@ -1,4 +1,8 @@
-const BASE_URL = 'https://vercel.app';
+// Production mein VITE_API_URL env variable use hoga
+// Local mein proxy (vite.config.js) /api ko 5000 par forward karta hai
+const BASE_URL = import.meta.env.VITE_API_URL
+  ? `${import.meta.env.VITE_API_URL}/api`
+  : '/api';
 
 // Get stored JWT token
 export const getToken = () => localStorage.getItem('jivika_token');
@@ -77,6 +81,23 @@ export const deleteTransaction = (id) =>
     headers: authHeaders()
   }).then(r => r.json());
 
-// ─── Exports (open in new tab with token in header won't work — use param) ──
-export const getExcelUrl = () => `${BASE_URL}/exports/excel`;
-export const getPdfUrl = () => `${BASE_URL}/exports/pdf`;
+// ─── Exports ──────────────────────────────────────────────────────────────────
+export const exportData = async (type) => {
+  const token = getToken();
+  const res = await fetch(`${BASE_URL}/exports/${type}`, {
+    headers: { Authorization: `Bearer ${token}` }
+  });
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.message || 'Export failed');
+  }
+  const blob = await res.blob();
+  const blobUrl = window.URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = blobUrl;
+  a.download = type === 'excel' ? 'Jivika_Transactions.xlsx' : 'Jivika_Transactions.pdf';
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  window.URL.revokeObjectURL(blobUrl);
+};
