@@ -98,3 +98,5 @@ app.use((err, req, res, _next) => {
 app.listen(PORT, '127.0.0.1', () => {
   console.log(`Jivika API Server running at http://127.0.0.1:${PORT}`);
 });
+
+module.exports = app; 
