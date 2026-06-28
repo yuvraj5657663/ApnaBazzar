@@ -16,10 +16,18 @@ const generateToken = (id) => {
 // @access Public
 router.post('/signup', async (req, res) => {
   try {
+    console.log('Signup request received:', { name: req.body.name, email: req.body.email, role: req.body.role });
+    
     const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: 'Name, email, and password are required.' });
+    }
+
+    // Check if JWT_SECRET is set
+    if (!process.env.JWT_SECRET) {
+      console.error('JWT_SECRET is not set in environment variables');
+      return res.status(500).json({ success: false, message: 'Server configuration error.' });
     }
 
     const existingUser = await User.findOne({ email: email.toLowerCase() });
@@ -31,7 +39,10 @@ router.post('/signup', async (req, res) => {
     const validRoles = ['Admin', 'VO Accountant', 'SHG Member'];
     const userRole = role && validRoles.includes(role) ? role : 'SHG Member';
 
+    console.log('Creating用户 with:', { name, email, role: userRole });
     const user = await User.create({ name, email, password, role: userRole });
+    console.log('用户 created successfully');
+    
     const token = generateToken(user._id);
 
     res.status(201).json({
@@ -46,7 +57,13 @@ router.post('/signup', async (req, res) => {
       }
     });
   } catch (err) {
-    res.status(500).json({ success: false, message: 'Server error.', error: err.message });
+    console.error('Signup Error:', err);
+    res.status(500).json({ 
+      success: false, 
+      message: 'Server error.', 
+      error: err.message,
+      details: process.env.NODE_ENV === 'development' ? err.stack : undefined
+    });
   }
 });
 
