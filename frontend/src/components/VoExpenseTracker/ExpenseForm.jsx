@@ -21,7 +21,7 @@ function ExpenseForm({ vos, onExpenseSubmit }) {
 
   return (
     <div style={styles.card}>
-      <h3 style={styles.heading}>� ADD EXPENSE TRANSACTION</h3>
+      <h3 style={styles.heading}>💸 ADD EXPENSE TRANSACTION</h3>
       <form onSubmit={handleSubmit} style={styles.form}>
 
         <div style={styles.field}>

@@ -1,26 +1,23 @@
-// Production backend URL
-const BASE_URL = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL}/api`
+const apiRoot = import.meta.env.VITE_API_URL
+  ? import.meta.env.VITE_API_URL.replace(/\/$/, '')
   : import.meta.env.PROD
-    ? 'https://apna-bazzar-eight.vercel.app/api'
-    : '/api';
+    ? 'https://apna-bazzar-eight.vercel.app'
+    : '';
 
-// Get stored JWT token
+const BASE_URL = `${apiRoot}/api`;
+
 export const getToken = () => localStorage.getItem('jivika_token');
 
-// Store token + user
 export const setAuth = (token, user) => {
   localStorage.setItem('jivika_token', token);
   localStorage.setItem('jivika_user', JSON.stringify(user));
 };
 
-// Clear auth on logout
 export const clearAuth = () => {
   localStorage.removeItem('jivika_token');
   localStorage.removeItem('jivika_user');
 };
 
-// Get persisted user (for page refresh)
 export const getStoredUser = () => {
   try {
     const u = localStorage.getItem('jivika_user');
@@ -30,7 +27,6 @@ export const getStoredUser = () => {
   }
 };
 
-// Build request headers with JWT
 const authHeaders = () => ({
   'Content-Type': 'application/json',
   Authorization: `Bearer ${getToken()}`
@@ -44,12 +40,15 @@ export const apiLogin = (email, password) =>
     body: JSON.stringify({ email, password })
   }).then(r => r.json());
 
-export const apiSignup = (name, email, password, role) =>
+export const apiSignup = (name, email, password) =>
   fetch(`${BASE_URL}/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password, role })
+    body: JSON.stringify({ name, email, password })
   }).then(r => r.json());
+
+export const fetchMe = () =>
+  fetch(`${BASE_URL}/auth/me`, { headers: authHeaders() }).then(r => r.json());
 
 // ─── VOs & SHGs ──────────────────────────────────────────────────────────────
 export const fetchVos = () =>
@@ -81,6 +80,10 @@ export const deleteTransaction = (id) =>
     method: 'DELETE',
     headers: authHeaders()
   }).then(r => r.json());
+
+// ─── Products ─────────────────────────────────────────────────────────────────
+export const fetchProducts = () =>
+  fetch(`${BASE_URL}/products`, { headers: authHeaders() }).then(r => r.json());
 
 // ─── Exports ──────────────────────────────────────────────────────────────────
 export const exportData = async (type) => {

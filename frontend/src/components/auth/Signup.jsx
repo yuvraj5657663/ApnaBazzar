@@ -2,11 +2,10 @@ import { useState } from 'react';
 import { apiSignup, setAuth } from '../../utils/api';
 import jeevikaLogo from '../../assets/jeevika-logo.png';
 
-function Signup({ onSwitchToLogin }) {
+function Signup({ onSignupSuccess, onSwitchToLogin }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [role, setRole] = useState('VO Accountant');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -23,12 +22,10 @@ function Signup({ onSwitchToLogin }) {
     }
     setLoading(true);
     try {
-      const data = await apiSignup(name, email, password, role);
+      const data = await apiSignup(name, email, password);
       if (data.success) {
-        // Auto-login after signup
         setAuth(data.token, data.user);
-        alert('Account created successfully! Welcome to Jivika Suite 🎉');
-        onSwitchToLogin();
+        onSignupSuccess(data.user);
       } else {
         setError(data.message || 'Signup failed. Please try again.');
       }
@@ -95,18 +92,6 @@ function Signup({ onSwitchToLogin }) {
                 </span>
               </div>
             )}
-          </div>
-
-          <div style={styles.field}>
-            <label style={styles.label}>ACCOUNT ROLE</label>
-            <select
-              value={role} onChange={(e) => setRole(e.target.value)}
-              style={{ ...styles.input, cursor: 'pointer', backgroundColor: '#fff' }}
-            >
-              <option value="Admin">Admin (Full Access)</option>
-              <option value="VO Accountant">VO Accountant</option>
-              <option value="SHG Member">SHG Member (View Only)</option>
-            </select>
           </div>
 
           <button

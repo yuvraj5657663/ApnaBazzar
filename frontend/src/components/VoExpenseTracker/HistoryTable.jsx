@@ -1,31 +1,11 @@
-import { getToken } from '../../utils/api';
+import { exportData } from '../../utils/api';
 
 function HistoryTable({ transactions, userRole, loading, onRefresh }) {
   const safeTransactions = Array.isArray(transactions) ? transactions : [];
 
-  // Export — pass token as query param since browser fetch for file downloads
-  // can't set headers via window.open; we use a temporary link with fetch blob
   const handleExport = async (type) => {
     try {
-      const token = getToken();
-      const url = `${BASE_URL}/exports/${type}`;
-      const res = await fetch(url, {
-        headers: { Authorization: `Bearer ${token}` }
-      });
-      if (!res.ok) {
-        const err = await res.json();
-        alert(err.message || 'Export failed.');
-        return;
-      }
-      const blob = await res.blob();
-      const blobUrl = window.URL.createObjectURL(blob);
-      const a = document.createElement('a');
-      a.href = blobUrl;
-      a.download = type === 'excel' ? 'Jivika_Transactions.xlsx' : 'Jivika_Transactions.pdf';
-      document.body.appendChild(a);
-      a.click();
-      a.remove();
-      window.URL.revokeObjectURL(blobUrl);
+      await exportData(type);
     } catch (err) {
       alert('Export error: ' + err.message);
     }

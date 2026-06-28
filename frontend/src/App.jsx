@@ -1,16 +1,38 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import BazaarView from './components/BazzarView';
 import VoExpenseTracker from './components/VoExpenseTracker/index';
 import Login from './components/auth/Login';
 import Signup from './components/auth/Signup';
-import { getStoredUser, clearAuth } from './utils/api';
+import { getStoredUser, clearAuth, getToken, fetchMe } from './utils/api';
 import jeevikaLogo from './assets/jeevika-logo.png';
 
 function App() {
-  // Restore user from localStorage on page load (JWT persistence)
   const [user, setUser] = useState(() => getStoredUser());
+  const [authChecking, setAuthChecking] = useState(!!getToken());
   const [authPage, setAuthPage] = useState('login');
   const [currentTab, setCurrentTab] = useState('tracker');
+
+  useEffect(() => {
+    const token = getToken();
+    if (!token) {
+      setUser(null);
+      setAuthChecking(false);
+      return;
+    }
+    fetchMe()
+      .then((data) => {
+        if (data.success) setUser(data.user);
+        else {
+          clearAuth();
+          setUser(null);
+        }
+      })
+      .catch(() => {
+        clearAuth();
+        setUser(null);
+      })
+      .finally(() => setAuthChecking(false));
+  }, []);
 
   const handleLogout = () => {
     clearAuth();
@@ -25,13 +47,21 @@ function App() {
   };
 
   // ── Auth Wall ────────────────────────────────────────────────────────────────
+  if (authChecking) {
+    return (
+      <div style={{ ...styles.authWrap, display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+        <p style={{ color: '#64748b', fontSize: '14px' }}>Loading...</p>
+      </div>
+    );
+  }
+
   if (!user) {
     return (
       <div style={styles.authWrap}>
         {authPage === 'login' ? (
           <Login onLoginSuccess={handleLoginSuccess} onSwitchToSignup={() => setAuthPage('signup')} />
         ) : (
-          <Signup onSwitchToLogin={() => setAuthPage('login')} />
+          <Signup onSignupSuccess={handleLoginSuccess} onSwitchToLogin={() => setAuthPage('login')} />
         )}
       </div>
     );
