@@ -17,6 +17,7 @@ const productRoutes = require('./routes/productRoutes');
 const VO = require('./models/VoModel');
 const SHG = require('./models/ShgModel');
 const Product = require('./models/ProductModel');
+const User = require('./models/UserModel');
 
 const app = express();
 
@@ -56,6 +57,7 @@ app.use(express.urlencoded({ extended: true }));
 connectDB().then(() => {
   seedDatabase();
   seedProducts();
+  seedUsers();
 }).catch(err => console.error('DB Connection Error:', err));
 
 // ─── Seed VO & SHG if empty ───────────────────────────────────────────────────
@@ -113,6 +115,31 @@ async function seedProducts() {
     console.log('Product seed complete.');
   } catch (err) {
     if (err.code !== 11000) console.error('Product seed error:', err.message);
+  }
+}
+
+async function seedUsers() {
+  try {
+    const userCount = await User.countDocuments();
+    if (userCount > 0) return;
+
+    await User.create([
+      {
+        name: 'Admin User',
+        email: 'admin@jivika.org',
+        password: 'Admin123',
+        role: 'Admin'
+      },
+      {
+        name: 'VO Accountant',
+        email: 'accountant@jivika.org',
+        password: 'Accountant123',
+        role: 'VO Accountant'
+      }
+    ]);
+    console.log('User seed complete. Admin: admin@jivika.org / Admin123, Accountant: accountant@jivika.org / Accountant123');
+  } catch (err) {
+    if (err.code !== 11000) console.error('User seed error:', err.message);
   }
 }
 

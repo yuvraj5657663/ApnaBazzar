@@ -39,7 +39,7 @@ function IncomeForm({ vos, shgs, selectedVo, selectedShg, onVoChange, onIncomeSu
             value={selectedShg}
             onChange={(e) => setSelectedShg(e.target.value)}
             disabled={!selectedVo}
-            style={{ ...styles.input, backgroundColor: !selectedVo ? '#f8fafc' : '#fff', color: !selectedVo ? '#94a3b8' : '#0f172a' }}
+            style={{ ...styles.input, backgroundColor: !selectedVo ? '#f5f5f5' : '#fff', color: !selectedVo ? '#999999' : '#000000' }}
           >
             <option value="">-- Choose SHG --</option>
             {safeShgs.map(shg => (
@@ -47,7 +47,7 @@ function IncomeForm({ vos, shgs, selectedVo, selectedShg, onVoChange, onIncomeSu
             ))}
           </select>
           {!selectedVo && (
-            <p style={{ margin: '4px 0 0', fontSize: '11px', color: '#94a3b8' }}>Select a VO first to see SHGs.</p>
+            <p style={{ margin: '4px 0 0', fontSize: '11px', color: '#999999' }}>Select a VO first to see SHGs.</p>
           )}
         </div>
 
@@ -80,21 +80,21 @@ function IncomeForm({ vos, shgs, selectedVo, selectedShg, onVoChange, onIncomeSu
 const styles = {
   card: {
     backgroundColor: '#fff', padding: '24px', borderRadius: '12px',
-    boxShadow: '0 4px 15px rgba(0,0,0,0.06)', borderTop: '4px solid #16a34a'
+    boxShadow: '0 4px 15px rgba(0,0,0,0.1)', borderTop: '4px solid #00cc00'
   },
-  heading: { margin: '0 0 20px 0', color: '#16a34a', fontSize: '16px', fontWeight: '700' },
+  heading: { margin: '0 0 20px 0', color: '#00cc00', fontSize: '16px', fontWeight: '700' },
   form: { display: 'flex', flexDirection: 'column', gap: '14px' },
   field: {},
   label: {
-    display: 'block', fontSize: '11px', fontWeight: '600', color: '#475569',
+    display: 'block', fontSize: '11px', fontWeight: '600', color: '#333333',
     marginBottom: '5px', letterSpacing: '0.6px'
   },
   input: {
-    width: '100%', padding: '10px 12px', borderRadius: '7px', border: '1px solid #e2e8f0',
-    fontSize: '14px', color: '#0f172a', boxSizing: 'border-box', outline: 'none'
+    width: '100%', padding: '10px 12px', borderRadius: '7px', border: '1px solid #cccccc',
+    fontSize: '14px', color: '#000000', boxSizing: 'border-box', outline: 'none'
   },
   btn: {
-    width: '100%', padding: '12px', backgroundColor: '#16a34a', color: '#fff', border: 'none',
+    width: '100%', padding: '12px', backgroundColor: '#00cc00', color: '#fff', border: 'none',
     borderRadius: '7px', fontWeight: '700', cursor: 'pointer', fontSize: '14px', marginTop: '4px'
   }
 };

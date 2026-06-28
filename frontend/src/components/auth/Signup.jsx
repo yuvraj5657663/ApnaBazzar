@@ -6,6 +6,7 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [role, setRole] = useState('SHG Member');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -22,7 +23,7 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
     }
     setLoading(true);
     try {
-      const data = await apiSignup(name, email, password);
+      const data = await apiSignup(name, email, password, role);
       if (data.success) {
         setAuth(data.token, data.user);
         onSignupSuccess(data.user);
@@ -78,20 +79,34 @@ function Signup({ onSignupSuccess, onSwitchToLogin }) {
               value={password} onChange={(e) => setPassword(e.target.value)}
               style={{
                 ...styles.input,
-                borderColor: password.length === 0 ? '#e2e8f0' : isPasswordStrong ? '#10b981' : '#f59e0b'
+                borderColor: password.length === 0 ? '#cccccc' : isPasswordStrong ? '#00cc00' : '#ff9900'
               }}
               required autoComplete="new-password"
             />
             {password.length > 0 && (
               <div style={{ display: 'flex', gap: '16px', marginTop: '7px', fontSize: '11px', fontWeight: '600' }}>
-                <span style={{ color: isLengthValid ? '#10b981' : '#94a3b8' }}>
+                <span style={{ color: isLengthValid ? '#00cc00' : '#999999' }}>
                   {isLengthValid ? '✓' : '○'} At least 6 characters
                 </span>
-                <span style={{ color: hasNumber ? '#10b981' : '#94a3b8' }}>
+                <span style={{ color: hasNumber ? '#00cc00' : '#999999' }}>
                   {hasNumber ? '✓' : '○'} Contains a number
                 </span>
               </div>
             )}
+          </div>
+
+          <div style={styles.field}>
+            <label style={styles.label}>ROLE</label>
+            <select
+              value={role}
+              onChange={(e) => setRole(e.target.value)}
+              style={styles.input}
+              required
+            >
+              <option value="SHG Member">SHG Member (View Only)</option>
+              <option value="VO Accountant">VO Accountant (Can Add Entries)</option>
+              <option value="Admin">Admin (Full Access)</option>
+            </select>
           </div>
 
           <button
@@ -119,42 +134,42 @@ const styles = {
   },
   card: {
     backgroundColor: 'white', padding: '40px', borderRadius: '16px',
-    boxShadow: '0 10px 40px rgba(0,0,0,0.08)', width: '100%', maxWidth: '420px',
-    border: '1px solid #f1f5f9'
+    boxShadow: '0 10px 40px rgba(0,0,0,0.15)', width: '100%', maxWidth: '420px',
+    border: '1px solid #cccccc'
   },
   logoArea: {
     display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '28px',
-    paddingBottom: '20px', borderBottom: '1px solid #f1f5f9'
+    paddingBottom: '20px', borderBottom: '1px solid #cccccc'
   },
   logoImg: {
     width: '52px', height: '52px', objectFit: 'contain',
-    borderRadius: '10px', backgroundColor: '#f8fafc', padding: '4px'
+    borderRadius: '10px', backgroundColor: '#f5f5f5', padding: '4px'
   },
-  brandName: { margin: 0, fontSize: '16px', fontWeight: '700', color: '#0f172a', letterSpacing: '1px' },
-  brandTag: { margin: 0, fontSize: '11px', color: '#94a3b8' },
-  title: { margin: '0 0 6px 0', color: '#0f172a', fontSize: '22px', fontWeight: '700' },
-  subtitle: { margin: '0 0 24px 0', color: '#64748b', fontSize: '14px' },
+  brandName: { margin: 0, fontSize: '16px', fontWeight: '700', color: '#000000', letterSpacing: '1px' },
+  brandTag: { margin: 0, fontSize: '11px', color: '#666666' },
+  title: { margin: '0 0 6px 0', color: '#000000', fontSize: '22px', fontWeight: '700' },
+  subtitle: { margin: '0 0 24px 0', color: '#666666', fontSize: '14px' },
   errorBox: {
-    backgroundColor: '#fef2f2', border: '1px solid #fca5a5', color: '#dc2626',
+    backgroundColor: '#ffe6e6', border: '1px solid #cc0000', color: '#cc0000',
     padding: '12px', borderRadius: '8px', fontSize: '13px', marginBottom: '20px', fontWeight: '500'
   },
   field: { marginBottom: '16px' },
   label: {
     display: 'block', fontWeight: '600', marginBottom: '6px',
-    fontSize: '11px', color: '#475569', letterSpacing: '0.8px'
+    fontSize: '11px', color: '#333333', letterSpacing: '0.8px'
   },
   input: {
     width: '100%', padding: '12px 14px', borderRadius: '8px',
-    border: '1px solid #e2e8f0', outline: 'none', fontSize: '14px',
-    boxSizing: 'border-box', color: '#0f172a'
+    border: '1px solid #cccccc', outline: 'none', fontSize: '14px',
+    boxSizing: 'border-box', color: '#000000'
   },
   btnPrimary: {
-    width: '100%', backgroundColor: '#0ea5e9', color: 'white', border: 'none',
+    width: '100%', backgroundColor: '#0066cc', color: 'white', border: 'none',
     padding: '13px', borderRadius: '8px', fontWeight: '700', cursor: 'pointer',
     fontSize: '15px', marginTop: '8px'
   },
-  switchText: { textAlign: 'center', marginTop: '22px', marginBottom: 0, fontSize: '14px', color: '#64748b' },
-  link: { color: '#0ea5e9', cursor: 'pointer', fontWeight: '600' }
+  switchText: { textAlign: 'center', marginTop: '22px', marginBottom: 0, fontSize: '14px', color: '#666666' },
+  link: { color: '#0066cc', cursor: 'pointer', fontWeight: '600' }
 };
 
 export default Signup;

@@ -66,21 +66,21 @@ function ExpenseForm({ vos, onExpenseSubmit }) {
 const styles = {
   card: {
     backgroundColor: '#fff', padding: '24px', borderRadius: '12px',
-    boxShadow: '0 4px 15px rgba(0,0,0,0.06)', borderTop: '4px solid #ef4444'
+    boxShadow: '0 4px 15px rgba(0,0,0,0.1)', borderTop: '4px solid #cc0000'
   },
-  heading: { margin: '0 0 20px 0', color: '#dc2626', fontSize: '16px', fontWeight: '700' },
+  heading: { margin: '0 0 20px 0', color: '#cc0000', fontSize: '16px', fontWeight: '700' },
   form: { display: 'flex', flexDirection: 'column', gap: '14px' },
   field: {},
   label: {
-    display: 'block', fontSize: '11px', fontWeight: '600', color: '#475569',
+    display: 'block', fontSize: '11px', fontWeight: '600', color: '#333333',
     marginBottom: '5px', letterSpacing: '0.6px'
   },
   input: {
-    width: '100%', padding: '10px 12px', borderRadius: '7px', border: '1px solid #e2e8f0',
-    fontSize: '14px', color: '#0f172a', boxSizing: 'border-box', outline: 'none'
+    width: '100%', padding: '10px 12px', borderRadius: '7px', border: '1px solid #cccccc',
+    fontSize: '14px', color: '#000000', boxSizing: 'border-box', outline: 'none'
   },
   btn: {
-    width: '100%', padding: '12px', backgroundColor: '#ef4444', color: '#fff', border: 'none',
+    width: '100%', padding: '12px', backgroundColor: '#cc0000', color: '#fff', border: 'none',
     borderRadius: '7px', fontWeight: '700', cursor: 'pointer', fontSize: '14px', marginTop: '4px'
   }
 };

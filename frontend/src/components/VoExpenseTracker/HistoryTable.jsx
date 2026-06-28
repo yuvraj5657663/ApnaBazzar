@@ -46,7 +46,7 @@ function HistoryTable({ transactions, userRole, loading, onRefresh }) {
       {safeTransactions.length === 0 ? (
         <div style={styles.emptyState}>
           <p style={{ fontSize: '36px', margin: '0 0 10px 0' }}>📋</p>
-          <p style={{ color: '#64748b', fontWeight: '500', margin: 0 }}>No transactions yet. Start by adding income or expenses above.</p>
+          <p style={{ color: '#666666', fontWeight: '500', margin: 0 }}>No transactions yet. Start by adding income or expenses above.</p>
         </div>
       ) : (
         <div style={{ overflowX: 'auto' }}>
@@ -65,7 +65,7 @@ function HistoryTable({ transactions, userRole, loading, onRefresh }) {
               {safeTransactions.map((t, idx) => (
                 <tr
                   key={t.id || idx}
-                  style={{ ...styles.tr, backgroundColor: idx % 2 === 0 ? '#fff' : '#fafafa' }}
+                  style={{ ...styles.tr, backgroundColor: idx % 2 === 0 ? '#fff' : '#f5f5f5' }}
                 >
                   <td style={styles.td}>
                     {t.createdAt ? new Date(t.createdAt).toLocaleDateString('en-IN') : '—'}
@@ -74,16 +74,16 @@ function HistoryTable({ transactions, userRole, loading, onRefresh }) {
                   <td style={styles.td}>{t.shg || 'N/A'}</td>
                   <td style={styles.td}>
                     <span style={{
-                      backgroundColor: t.isIncome ? '#f0fdf4' : '#fef2f2',
-                      color: t.isIncome ? '#16a34a' : '#dc2626',
+                      backgroundColor: t.isIncome ? '#e6ffe6' : '#ffe6e6',
+                      color: t.isIncome ? '#00cc00' : '#cc0000',
                       padding: '3px 9px', borderRadius: '5px', fontSize: '11px', fontWeight: '700',
-                      border: `1px solid ${t.isIncome ? '#bbf7d0' : '#fecaca'}`
+                      border: `1px solid ${t.isIncome ? '#00cc00' : '#cc0000'}`
                     }}>
                       {t.type || (t.isIncome ? 'INCOME' : 'EXPENSE')}
                     </span>
                   </td>
                   <td style={styles.td}>{t.title}</td>
-                  <td style={{ ...styles.td, textAlign: 'right', fontWeight: '700', color: t.isIncome ? '#16a34a' : '#dc2626' }}>
+                  <td style={{ ...styles.td, textAlign: 'right', fontWeight: '700', color: t.isIncome ? '#00cc00' : '#cc0000' }}>
                     {t.isIncome ? '+' : '−'} Rs. {Number(t.amount || 0).toFixed(2)}
                   </td>
                 </tr>
@@ -95,7 +95,7 @@ function HistoryTable({ transactions, userRole, loading, onRefresh }) {
 
       {/* Footer count */}
       {safeTransactions.length > 0 && (
-        <div style={{ marginTop: '14px', fontSize: '12px', color: '#94a3b8', textAlign: 'right' }}>
+        <div style={{ marginTop: '14px', fontSize: '12px', color: '#999999', textAlign: 'right' }}>
           Showing {safeTransactions.length} transaction{safeTransactions.length !== 1 ? 's' : ''}
         </div>
       )}
@@ -106,38 +106,38 @@ function HistoryTable({ transactions, userRole, loading, onRefresh }) {
 const styles = {
   card: {
     backgroundColor: 'white', padding: '24px', borderRadius: '12px',
-    boxShadow: '0 4px 15px rgba(0,0,0,0.05)'
+    boxShadow: '0 4px 15px rgba(0,0,0,0.1)'
   },
   header: {
     display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-    marginBottom: '20px', paddingBottom: '14px', borderBottom: '2px solid #0ea5e9'
+    marginBottom: '20px', paddingBottom: '14px', borderBottom: '2px solid #cc0000'
   },
-  title: { margin: 0, color: '#0f172a', fontSize: '16px', fontWeight: '700' },
-  loadingDot: { color: '#94a3b8', fontSize: '13px', fontWeight: '500' },
+  title: { margin: 0, color: '#000000', fontSize: '16px', fontWeight: '700' },
+  loadingDot: { color: '#999999', fontSize: '13px', fontWeight: '500' },
   refreshBtn: {
-    backgroundColor: '#f1f5f9', color: '#475569', border: '1px solid #e2e8f0',
+    backgroundColor: '#f5f5f5', color: '#333333', border: '1px solid #cccccc',
     padding: '7px 14px', borderRadius: '6px', fontWeight: '600', cursor: 'pointer', fontSize: '12px'
   },
   excelBtn: {
-    backgroundColor: '#0f172a', color: '#fff', border: 'none',
+    backgroundColor: '#000000', color: '#fff', border: 'none',
     padding: '7px 14px', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '12px'
   },
   pdfBtn: {
-    backgroundColor: '#dc2626', color: '#fff', border: 'none',
+    backgroundColor: '#cc0000', color: '#fff', border: 'none',
     padding: '7px 14px', borderRadius: '6px', fontWeight: '700', cursor: 'pointer', fontSize: '12px'
   },
-  restrictedNote: { fontSize: '11px', color: '#94a3b8', fontStyle: 'italic' },
+  restrictedNote: { fontSize: '11px', color: '#999999', fontStyle: 'italic' },
   emptyState: {
     textAlign: 'center', padding: '50px 20px'
   },
   table: { width: '100%', borderCollapse: 'collapse', fontSize: '13px', textAlign: 'left' },
-  thead: { borderBottom: '2px solid #e2e8f0' },
+  thead: { borderBottom: '2px solid #cccccc' },
   th: {
-    padding: '10px 12px', color: '#64748b', fontWeight: '600',
-    fontSize: '11px', letterSpacing: '0.6px', backgroundColor: '#f8fafc'
+    padding: '10px 12px', color: '#333333', fontWeight: '600',
+    fontSize: '11px', letterSpacing: '0.6px', backgroundColor: '#f5f5f5'
   },
-  tr: { borderBottom: '1px solid #f1f5f9', transition: 'background-color 0.15s' },
-  td: { padding: '12px 12px', color: '#334155' }
+  tr: { borderBottom: '1px solid #cccccc', transition: 'background-color 0.15s' },
+  td: { padding: '12px 12px', color: '#000000' }
 };
 
 export default HistoryTable;

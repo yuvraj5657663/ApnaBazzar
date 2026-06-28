@@ -137,11 +137,11 @@ function VoExpenseTracker({ userRole }) {
       {/* Access Level Badge */}
       <div style={{
         display: 'inline-flex', alignItems: 'center', gap: '6px',
-        backgroundColor: '#e0f2fe', padding: '5px 12px', borderRadius: '6px',
-        fontSize: '12px', fontWeight: '600', color: '#0369a1', marginBottom: '20px'
+        backgroundColor: '#e6f0ff', padding: '5px 12px', borderRadius: '6px',
+        fontSize: '12px', fontWeight: '600', color: '#003366', marginBottom: '20px'
       }}>
         <span>Access Level:</span>
-        <span style={{ color: '#0ea5e9' }}>{userRole?.toUpperCase()}</span>
+        <span style={{ color: '#0066cc' }}>{userRole?.toUpperCase()}</span>
       </div>
 
       <SummaryCards totalIncome={totalIncome} totalExpense={totalExpense} />
@@ -163,7 +163,7 @@ function VoExpenseTracker({ userRole }) {
         </div>
       ) : (
         <div style={{
-          backgroundColor: '#f0f9ff', border: '1px solid #bae6fd', color: '#0369a1',
+          backgroundColor: '#e6f0ff', border: '1px solid #0066cc', color: '#003366',
           padding: '16px', borderRadius: '10px', fontSize: '14px', marginBottom: '24px', fontWeight: '500'
         }}>
           ℹ️ You are logged in as an <strong>SHG Member</strong>. Data entry is restricted to view-only access.

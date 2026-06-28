@@ -1,7 +1,7 @@
 const apiRoot = import.meta.env.VITE_API_URL
   ? import.meta.env.VITE_API_URL.replace(/\/$/, '')
   : import.meta.env.PROD
-    ? 'https://apna-bazzar-eight.vercel.app'
+    ? ''
     : '';
 
 const BASE_URL = `${apiRoot}/api`;
@@ -40,11 +40,11 @@ export const apiLogin = (email, password) =>
     body: JSON.stringify({ email, password })
   }).then(r => r.json());
 
-export const apiSignup = (name, email, password) =>
+export const apiSignup = (name, email, password, role) =>
   fetch(`${BASE_URL}/auth/signup`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify({ name, email, password })
+    body: JSON.stringify({ name, email, password, role })
   }).then(r => r.json());
 
 export const fetchMe = () =>

@@ -5,27 +5,27 @@ function SummaryCards({ totalIncome, totalExpense }) {
     {
       label: 'TOTAL INCOME',
       value: totalIncome,
-      color: '#16a34a',
-      bg: '#f0fdf4',
-      border: '#16a34a',
+      color: '#00cc00',
+      bg: '#e6ffe6',
+      border: '#00cc00',
       icon: '💰',
       prefix: '+'
     },
     {
       label: 'TOTAL EXPENSE',
       value: totalExpense,
-      color: '#dc2626',
-      bg: '#fef2f2',
-      border: '#dc2626',
+      color: '#cc0000',
+      bg: '#ffe6e6',
+      border: '#cc0000',
       icon: '💸',
       prefix: '-'
     },
     {
       label: 'NET BALANCE',
       value: currentBalance,
-      color: currentBalance >= 0 ? '#0ea5e9' : '#f97316',
-      bg: currentBalance >= 0 ? '#f0f9ff' : '#fff7ed',
-      border: currentBalance >= 0 ? '#0ea5e9' : '#f97316',
+      color: currentBalance >= 0 ? '#0066cc' : '#cc0000',
+      bg: currentBalance >= 0 ? '#e6f0ff' : '#ffe6e6',
+      border: currentBalance >= 0 ? '#0066cc' : '#cc0000',
       icon: currentBalance >= 0 ? '📈' : '📉',
       prefix: currentBalance >= 0 ? '+' : ''
     }
@@ -45,7 +45,7 @@ function SummaryCards({ totalIncome, totalExpense }) {
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '10px' }}>
             <span style={{ fontSize: '18px' }}>{card.icon}</span>
-            <p style={{ margin: 0, color: '#64748b', fontSize: '11px', fontWeight: '700', letterSpacing: '0.8px' }}>
+            <p style={{ margin: 0, color: '#666666', fontSize: '11px', fontWeight: '700', letterSpacing: '0.8px' }}>
               {card.label}
             </p>
           </div>

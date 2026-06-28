@@ -39,18 +39,18 @@ function AnalyticsCharts({ transactions }) {
     <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(400px, 1fr))', gap: '30px', marginBottom: '40px' }}>
       
       {/* WIDGET A: CASH FLOW RATIO (DONUT CHART) */}
-      <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
-        <h4 style={{ margin: '0 0 20px 0', color: '#1e293b', alignSelf: 'flex-start', fontSize: '16px', fontWeight: 'bold', borderBottom: '2px solid #007bff', paddingBottom: '6px' }}>
+      <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)', display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+        <h4 style={{ margin: '0 0 20px 0', color: '#000000', alignSelf: 'flex-start', fontSize: '16px', fontWeight: 'bold', borderBottom: '2px solid #0066cc', paddingBottom: '6px' }}>
           💵 CASH FLOW RATIO
         </h4>
         
         {totalVolume === 0 ? (
-          <p style={{ color: '#64748b', fontSize: '13px', margin: '40px 0' }}>No chart data available yet.</p>
+          <p style={{ color: '#666666', fontSize: '13px', margin: '40px 0' }}>No chart data available yet.</p>
         ) : (
           <div style={{ display: 'flex', alignItems: 'center', gap: '40px', width: '100%', justifyContent: 'center' }}>
             <svg width="140" height="140" viewBox="0 0 100 100">
-              <circle cx="50" cy="50" r="40" fill="transparent" stroke="#dc3545" strokeWidth="12" />
-              <circle cx="50" cy="50" r="40" fill="transparent" stroke="#28a745" strokeWidth="12" 
+              <circle cx="50" cy="50" r="40" fill="transparent" stroke="#cc0000" strokeWidth="12" />
+              <circle cx="50" cy="50" r="40" fill="transparent" stroke="#00cc00" strokeWidth="12" 
                 strokeDasharray={`${incomeStrokeDash} ${circumference}`}
                 strokeDashoffset="0"
                 transform="rotate(-90 50 50)"
@@ -60,18 +60,18 @@ function AnalyticsCharts({ transactions }) {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 'bold', color: '#1e293b' }}>
-                  <span style={{ width: '12px', height: '12px', backgroundColor: '#28a745', borderRadius: '3px' }}></span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 'bold', color: '#000000' }}>
+                  <span style={{ width: '12px', height: '12px', backgroundColor: '#00cc00', borderRadius: '3px' }}></span>
                   Income ({incomePercentage.toFixed(0)}%)
                 </div>
-                <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '20px' }}>Rs. {incomeSum.toFixed(2)}</span>
+                <span style={{ fontSize: '12px', color: '#666666', marginLeft: '20px' }}>Rs. {incomeSum.toFixed(2)}</span>
               </div>
               <div>
-                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 'bold', color: '#1e293b' }}>
-                  <span style={{ width: '12px', height: '12px', backgroundColor: '#dc3545', borderRadius: '3px' }}></span>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '8px', fontSize: '13px', fontWeight: 'bold', color: '#000000' }}>
+                  <span style={{ width: '12px', height: '12px', backgroundColor: '#cc0000', borderRadius: '3px' }}></span>
                   Expense ({expensePercentage.toFixed(0)}%)
                 </div>
-                <span style={{ fontSize: '12px', color: '#64748b', marginLeft: '20px' }}>Rs. {expenseSum.toFixed(2)}</span>
+                <span style={{ fontSize: '12px', color: '#666666', marginLeft: '20px' }}>Rs. {expenseSum.toFixed(2)}</span>
               </div>
             </div>
           </div>
@@ -79,28 +79,28 @@ function AnalyticsCharts({ transactions }) {
       </div>
 
       {/* WIDGET B: TOP TRANSACTION TITLES (HORIZONTAL BAR CHART) */}
-      <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.05)' }}>
-        <h4 style={{ margin: '0 0 20px 0', color: '#1e293b', fontSize: '16px', fontWeight: 'bold', borderBottom: '2px solid #007bff', paddingBottom: '6px' }}>
+      <div style={{ backgroundColor: 'white', padding: '25px', borderRadius: '12px', boxShadow: '0 4px 15px rgba(0,0,0,0.1)' }}>
+        <h4 style={{ margin: '0 0 20px 0', color: '#000000', fontSize: '16px', fontWeight: 'bold', borderBottom: '2px solid #0066cc', paddingBottom: '6px' }}>
           📈 TOP VOLUME DRIVERS
         </h4>
 
         {sortedCategories.length === 0 ? (
-          <p style={{ color: '#64748b', fontSize: '13px', textAlign: 'center', margin: '40px 0' }}>Add transactions to generate volume metrics.</p>
+          <p style={{ color: '#666666', fontSize: '13px', textAlign: 'center', margin: '40px 0' }}>Add transactions to generate volume metrics.</p>
         ) : (
           <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
             {sortedCategories.map(([title, amount]) => {
               const barWidth = (amount / maxCategoryAmount) * 100;
               return (
                 <div key={title}>
-                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: '600', color: '#475569', marginBottom: '4px' }}>
+                  <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: '12px', fontWeight: '600', color: '#333333', marginBottom: '4px' }}>
                     <span style={{ textTransform: 'uppercase' }}>{title}</span>
-                    <span style={{ color: '#0f172a' }}>Rs. {amount.toFixed(2)}</span>
+                    <span style={{ color: '#000000' }}>Rs. {amount.toFixed(2)}</span>
                   </div>
-                  <div style={{ width: '100%', height: '10px', backgroundColor: '#f1f5f9', borderRadius: '5px', overflow: 'hidden' }}>
+                  <div style={{ width: '100%', height: '10px', backgroundColor: '#f5f5f5', borderRadius: '5px', overflow: 'hidden' }}>
                     <div style={{ 
                       width: `${barWidth}%`, 
                       height: '100%', 
-                      backgroundColor: '#38bdf8', 
+                      backgroundColor: '#0066cc', 
                       borderRadius: '5px',
                       transition: 'width 0.5s ease-in-out'
                     }}></div>

@@ -16,7 +16,7 @@ const generateToken = (id) => {
 // @access Public
 router.post('/signup', async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, role } = req.body;
 
     if (!name || !email || !password) {
       return res.status(400).json({ success: false, message: 'Name, email, and password are required.' });
@@ -27,7 +27,11 @@ router.post('/signup', async (req, res) => {
       return res.status(409).json({ success: false, message: 'Email is already registered.' });
     }
 
-    const user = await User.create({ name, email, password, role: 'SHG Member' });
+    // Validate role if provided
+    const validRoles = ['Admin', 'VO Accountant', 'SHG Member'];
+    const userRole = role && validRoles.includes(role) ? role : 'SHG Member';
+
+    const user = await User.create({ name, email, password, role: userRole });
     const token = generateToken(user._id);
 
     res.status(201).json({
