@@ -1,7 +1,5 @@
-// dotenv sirf local mein chahiye — Vercel apne env vars khud inject karta hai
-if (process.env.NODE_ENV !== 'production') {
-  require('dotenv').config();
-}
+// dotenv load karo — Vercel par env vars already hote hain, local ke liye zaroori
+require('dotenv').config();
 
 const express = require('express');
 const cors = require('cors');
@@ -13,10 +11,12 @@ const voRoutes = require('./routes/voRoutes');
 const shgRoutes = require('./routes/shgRoutes');
 const transactionRoutes = require('./routes/transactionRoutes');
 const exportRoutes = require('./routes/exportRoutes');
+const productRoutes = require('./routes/productRoutes');
 
 // Models for seeding
 const VO = require('./models/VoModel');
 const SHG = require('./models/ShgModel');
+const Product = require('./models/ProductModel');
 
 const app = express();
 
@@ -35,7 +35,10 @@ const corsOptions = {
     if (process.env.FRONTEND_URL && origin === process.env.FRONTEND_URL) {
       return callback(null, true);
     }
-    return callback(null, true); // Allow all for now — tighten later
+    if (process.env.NODE_ENV !== 'production') {
+      return callback(null, true);
+    }
+    return callback(new Error(`CORS blocked: ${origin}`));
   },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
@@ -52,6 +55,7 @@ app.use(express.urlencoded({ extended: true }));
 // ─── Connect Database ─────────────────────────────────────────────────────────
 connectDB().then(() => {
   seedDatabase();
+  seedProducts();
 }).catch(err => console.error('DB Connection Error:', err));
 
 // ─── Seed VO & SHG if empty ───────────────────────────────────────────────────
@@ -76,6 +80,42 @@ async function seedDatabase() {
   }
 }
 
+async function seedProducts() {
+  try {
+    const count = await Product.countDocuments();
+    if (count > 0) return;
+    await Product.insertMany([
+      {
+        name: 'Organic Wheat Flour',
+        price: 45,
+        image: 'https://images.unsplash.com/photo-1574323347407-f5e1ad6d020b?w=400',
+        description: 'Stone-ground atta from local farms'
+      },
+      {
+        name: 'Handwoven Basket',
+        price: 320,
+        image: 'https://images.unsplash.com/photo-1599643478518-a784e5dc4c8f?w=400',
+        description: 'Bamboo basket made by SHG artisans'
+      },
+      {
+        name: 'Pure Mustard Oil',
+        price: 180,
+        image: 'https://images.unsplash.com/photo-1474979266404-7eaacbcd87c5?w=400',
+        description: 'Cold-pressed kachi ghani oil'
+      },
+      {
+        name: 'Millets Mix',
+        price: 95,
+        image: 'https://images.unsplash.com/photo-1586201375761-83865001e31c?w=400',
+        description: 'Ragi, jowar, and bajra blend'
+      }
+    ]);
+    console.log('Product seed complete.');
+  } catch (err) {
+    if (err.code !== 11000) console.error('Product seed error:', err.message);
+  }
+}
+
 // ─── Routes ───────────────────────────────────────────────────────────────────
 app.get('/', (_req, res) => {
   res.json({ success: true, message: 'Jivika API is running!' });
@@ -96,6 +136,7 @@ app.use('/api/vos', voRoutes);
 app.use('/api/shgs', shgRoutes);
 app.use('/api/transactions', transactionRoutes);
 app.use('/api/exports', exportRoutes);
+app.use('/api/products', productRoutes);
 
 // 404
 app.use((req, res) => {
