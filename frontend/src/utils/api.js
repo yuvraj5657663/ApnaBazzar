@@ -1,8 +1,8 @@
 const apiRoot = import.meta.env.VITE_API_URL
   ? import.meta.env.VITE_API_URL.replace(/\/$/, '')
   : import.meta.env.PROD
-    ? ''
-    : '';
+    ? 'https://apna-bazzar-delta.vercel.app'
+    : 'http://localhost:5000';
 
 const BASE_URL = `${apiRoot}/api`;
 
